@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html>
+ <head>
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="canvasstylee.css">
+	<script src="https://cdn.ckeditor.com/ckeditor5/24.0.0/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="script.js"></script>
+
+
+  <style type="text/css">
+    @font-face {
+      font-family: Alata;
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/alata/v2/PbytFmztEwbIocezzqYzQ1OW7l8.woff2) format('woff2');
+      unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF
+    }
+
+    @font-face {
+      font-family: Alata;
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/alata/v2/PbytFmztEwbIoce9zqYzQ1OW.woff2) format('woff2');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
+    }
+
+    @font-face {
+      font-family: Orbitron;
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/orbitron/v16/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1nyGy6BoWg1fDAlp7lk.woff) format('woff');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
+    }
+  </style>
+  <meta charset="utf-8"/>
+  
+ </head>
+ <nav _ngcontent-eni-c20="" class="navbar navbar-expand-lg navbar-dark bg-dark"><a _ngcontent-eni-c20="" href="#" class="navbar-brand">--| Krump Designer |---</a></div></nav>
+<div id="whereContainer">
+<ul _ngcontent-mkd-c24="" class="nav nav-tabs">
+<li class="nav-item active" id="setup"><a _ngcontent-mkd-c24="" data-toggle="tab" href="#setupContainer" class="nav-link active">Setup Board</a></li>
+<li class="nav-item" id="missionDeetz"><a _ngcontent-mkd-c24="" data-toggle="tab" href="#deetz" class="nav-link">Details</a></li>
+<li class="nav-item" id="preview"><a _ngcontent-mkd-c24="" data-toggle="tab" href="#previewdownload" class="nav-link">Preview/Download</a></li>
+</ul>
+</div>
+<div id="setupContainer">
+<div class="twContaineroo" id="options">
+
+<div class="form-group" class="hidey">
+
+<label for "boardSize" class="hidey">Select Board Size - set this first</label>
+<select id="boardSize" class="form-control hidey">
+<option value="44,30">Combat Patrol/Incursion</option>
+<option value="60,44">Strike Force</option>
+<option value="90,44">Onslaught</option>
+</select>
+</div>
+</div>
+
+<div class="twContaineroo">
+<label for "deploymentContainer" class="hidey">Add Deployment Zone</label>
+<div id="deploymentContainer">
+
+<div id="addDep" class="depToggle box hider" shows="#depZone">
+Add Box Deployment Zone+
+</div>
+<div id="addCornerDep" class="depToggle corner hider" shows="#cornerDepZone">
+Add Corner Deployment Zone+
+</div>
+ </div>
+</div>
+
+<div class="twContaineroo">
+<div id="cornerDepZone" class="corner alwayshider">
+<span class="depToggle corner exitCurrent shower"><h5>X</h5></span>
+<h3 id="boardDescCorner"></h3>
+<div class="optContainer" id="corner">
+<div class="form-group" id="cornerSize">
+<label for "cornerEdge">Board Edge</label>
+<select id="cornerEdge" class="form-control">
+<option value="ignore">Select</option>
+<option value="tl">Top Left</option>
+<option value="tr">Top Right</option>
+<option value="bl">Bottom Left</option>
+<option value="br">BottomRight</option>
+</select>
+
+<div id="cornerOptions">
+<label for "cornerHeight">Corner Height</label>
+<input type="number" min="1" max="" id="cornerHeight" class="form-control cornerChange">
+<label for "cornerLength">Corner Length</label>
+<input type="number" min="1" max="" id="cornerLength" class="form-control cornerChange">
+</div>
+<button id="saveDepC" onclick="saveDep(this)" class="btn btn-primary btn-lg btn-block depToggle corner shower">Save</button>
+<div class="saveError"></div>
+</div>
+
+</div>
+</div>
+<div id="depZone" class="box alwayshider">
+<span class="depToggle box exitCurrent shower" ><h5>X</h5></span>
+<h3 id="boardDesc"></h3>
+<div class="optContainer" id="box">
+<div class="form-group" id="boxSize>
+<label for "boardEdge">Board Edge</label>
+<select id="boardEdge" class="form-control">
+<option value="ignore">Select</option>
+<option value="t">Top</option>
+<option value="b">Bottom</option>
+<option value="l">Left</option>
+<option value="r">Right</option>
+</select>
+
+<div id="boxOptions">
+<label for "zoneLength">Zone Length</label>
+<input type="number" min="1" max="" id="zoneLength" class="form-control boxChange">
+<div id="fromInputs">
+<label for "fromA">From<span id="fromALabel"></span></label>
+<input type="number" min="1" max="" id="fromA" class="form-control offSetCounter">
+<label for "fromB">From<span id="fromBLabel"></span></label>
+<input type="number" min="1" max="" id="fromB" class="form-control offSetCounter">
+</div>
+<label for "zoneDepth">Zone Depth</label>
+<input type="number" min="1" max="" id="zoneDepth" class="form-control boxChange">
+<label for "offSetEdge">Offset from <span id="offSetEdgeLabel"></span> of board</label>
+<input type="number" min="0" max="" id="offSetEdge" class="form-control boxChange">
+<div id="offSet">
+<label for "offSetSide">Offset from Side</label>
+<input type="number" min="0" max="" id="offSetSide" class="form-control boxChange">
+</div>
+</div>
+<button id="saveDep" onclick="saveDep(this)" class="btn btn-primary btn-lg btn-block depToggle box shower">Save</button>
+<div class="saveError"></div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="twContaineroo">
+<label for="exclusion" class="hidey">Exclude a section of the deployment zone (e.g Crossfire)</label>
+<div id="exclusion">
+<div id="exclusionBoxAdd" class="exToggle exBE exO exCToggle exBToggle hider" shows="#exBox">
+Add exclusion box
+</div>
+<div id="exclusionCircleAdd" class="exCToggle exCE exO hider" shows="#exCircle">
+Add exclusion circle
+</div>
+<div id="exCircle" class="exCToggle form-group alwayshider">
+<span class="exCE exitCurrent shower" ><h5>X</h5></span>
+<label for "exRadius">Circle Radius</label>
+<input type="number" min="1" max="" id="exRadius" class="form-control exCircleEdit">
+  <label for="fromCentre"> From Centre of Board</label><br/>
+  <input type="checkbox" id="circleFromCentre" checked>
+<div id="circlesizes">
+<label for "circleH">Circle Centre Start Height (from Top)</label>
+<input type="number" min="1" max="" id="circleH" class="form-control exCircleEdit">
+<label for "circleW">Circle Centre Start Width (from Left)</label>
+<input type="number" min="1" max="" id="circleW" class="form-control exCircleEdit">
+</div>
+
+<button id="saveExC" onclick="saveEx(this)" class="btn btn-primary btn-lg btn-block exCE shower">Save</button>
+</div>
+
+<div id="exBox" class="exBToggle form-group alwayshider">
+<span class="exBE exitCurrent shower" ><h5>X</h5></span>
+<label for "exBoxH">Box Height</label>
+<input type="number" id="exBoxH" value ="10" class="form-control exBoxEdit exChangeStart">
+<label for "exBoxW">Box Width</label>
+<input type="number" id="exBoxW" value ="15"  class="form-control exBoxEdit exChangeStart">
+  <label for="boxfromCentre"> From Centre of Board</label><br/>
+  <input type="checkbox" id="boxfromCentre" checked>
+<div id="boxLocation">
+<label for "exBoxSH">Box Start Height (from Top)</label>
+<input type="number" id="exBoxSH" class="form-control exBoxEdit exStart">
+<label for "exBoxSW">Box Start Width (from Left)</label>
+<input type="number"  id="exBoxSW" class="form-control exBoxEdit exStart">
+</div>
+
+<button id="saveExC" onclick="saveEx(this)" class="btn btn-primary btn-lg btn-block exBE shower">Save</button>
+</div>
+</div>
+
+</div>
+
+<div class="twContaineroo">
+<label for="objectiveContainer" class="hidey">Add Objective</label>
+<div id="objectiveContainer">
+<div id="objectiveadd" class="obToggle obE hider" shows="#objectiveanator">
+Add Objective
+</div>
+<div id="objectiveanator" class="form-group obE optContainer alwayshider">
+<span class="obToggle  exitCurrent shower"><h5>X</h5></span>
+<select id="addObjectiveFrom" class="form-control">
+</select>
+<div id="obFromTo"></div>
+<div id="saveObContainer"></div>
+</div>
+</div>
+
+</div>
+<div id="mapdesc" class="twContaineroo">
+<ul _ngcontent-mkd-c24="" class="nav nav-tabs">
+<li class="nav-item active" id="maptab"><a _ngcontent-mkd-c24="" data-toggle="tab" href="#setupContainer" class="nav-link active">Map</a></li>
+<li class="nav-item" id="desctab"><a _ngcontent-mkd-c24="" data-toggle="tab" href="#deetz" class="nav-link">Deployment/Objective descriptions</a></li>
+</ul>
+</div>
+<div class="twContaineroo">
+<div id="mapContainerContainerContainer">
+<div id="mapContainerContainer">
+<label for="mapContainer">Map</label>
+	<div id="mapContainer">
+		<canvas id="canvas" width="2000" height="1000"></canvas>
+	</div>
+ </div>
+</div>
+<div id="boardSetupContainerContainer">
+ <div id="boardSetupContainer">
+
+
+<div id="boardSetup">
+</div>
+<div id="deploymentSetup">	</div>
+<div id="objectiveSetup">	</div>
+
+ </div>
+</div>
+  </div>
+   <div id="hiddenBoxDep"></div>
+ <div id="hiddenCornerDep"></div>
+ <div id="hiddenOb"></div>
+  <div id="hiddenEx"></div>
+ 
+ </div>
+   <div class="twContaineroo" id="deetz">
+   <label for "missionName">Mission Name</label>
+<input type="text" id="missionName" class="form-control" >
+ <label for "missionBriefing">Mission Briefing</label>
+ <div id ="missionBriefing">
+ <div id="missionBriefText">
+ </div>
+ </div>
+ <label for "missionRules">Mission Rules</label>
+ <div id ="missionRules">
+ <div id="missionRulesText">
+ </div>
+ </div>
+  <label for "primaryObjectives">Primary Objectives</label>
+ <div id ="primaryObjectives">
+ <div id="primaryObjectivesText">
+ </div>
+ </div>
+   <label for "secondaryObjectives">Secondary Objectives</label>
+ <div id ="secondaryObjectives">
+ <div id="secondaryObjectivesText">
+ </div>
+ </div>
+ </div>
+ <div id="previewdownload">
+ <button _ngcontent-hys-c22="" id="download" class="btn btn-primary btn-lg btn-block">DOWNLOAD</button>
+ <div class="twContaineroo">
+ <div id="downloadContent">
+ <div id="mName"></div>
+<div id="mbriefing"></div>
+<div id="mrules"></div>
+<div id="mprimary"></div>
+<div id="msecondary"></div>
+<div id="mboardsetup"></div>
+<div id="mboard"></div>
+ </div>
+ </div>
+ </div>
+
+ </body>
+</html>
